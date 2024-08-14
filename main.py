@@ -24,7 +24,7 @@ if __name__ == "__main__":
         Version: 1.0
     """)
     
-    parser = argparse.ArgumentParser(description="Security Advisories Tool")
+    parser = argparse.ArgumentParser(description="Vulnerability Search Tool")
     
     parser.add_argument("-update", action="store_true", help="Update the database with the latest advisories")
     parser.add_argument("-keywords", help="Comma separated list of keywords to search for")
