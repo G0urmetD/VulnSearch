@@ -104,7 +104,7 @@ options:
 ```
 
 # Automation
-To automate the database update process, just you a cronjob and a small shell script. And do not forget to make the script executable.
+To automate the database update process, just use a cronjob and a small shell script. And do not forget to make the script executable.
 
 ```shell
 #!/bin/bash
