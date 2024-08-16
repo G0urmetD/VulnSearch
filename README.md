@@ -102,3 +102,23 @@ options:
   -days DAYS            Search for advisories in the last N days
   -init                 Switch parameter to initialiaze the database columns.
 ```
+
+# Automation
+To automate the database update process, just you a cronjob and a small shell script. And do not forget to make the script executable.
+
+```shell
+#!/bin/bash
+python3 main.py -update
+```
+
+Then create a cronjob to run every 2 hours:
+```bash
+crontab -e
+# choose the one you want
+
+# then enter the cronjob to run every 2 hours and create a log file
+0 */2 * * * /bin/bash /home/kali/VulnSearch/update_automation.sh >> /home/kali/VulnSearch/update_cron.log 2>&1
+
+# check your edit with
+crontab -l
+```
