@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime, timedelta
+from colorama import Fore, Style
 
 DB_NAME = 'security_advisories.db'
 
@@ -15,11 +16,12 @@ def initialize_database():
                        link TEXT,
                        description TEXT,
                        category TEXT,
-                       pubDate TEXT)''')
+                       pubDate TEXT,
+                       wid TEXT)''')
     conn.commit()
     conn.close()
 
-def insert_advisory(title, link, description, category, pubDate):
+def insert_advisory(title, link, description, category, pubDate, wid):
     conn = create_connection()
     cursor = conn.cursor()
     
@@ -29,8 +31,9 @@ def insert_advisory(title, link, description, category, pubDate):
     
     cursor.execute("SELECT * FROM advisories WHERE title=? AND pubDate=?", (title, pubDate_iso))
     if cursor.fetchone() is None:
-        cursor.execute('''INSERT INTO advisories (title, link, description, category, pubDate)
-                          VALUES (?, ?, ?, ?, ?)''', (title, link, description, category, pubDate_iso))
+        print(f"Inserting: {title}, WID: {wid}")  # Debug-Print
+        cursor.execute('''INSERT INTO advisories (title, link, description, category, pubDate, wid)
+                          VALUES (?, ?, ?, ?, ?, ?)''', (title, link, description, category, pubDate_iso, wid))
     conn.commit()
     conn.close()
 
@@ -43,7 +46,7 @@ def search_advisories(keywords, days=None):
         date_limit = datetime.utcnow() - timedelta(days=days)
     
     keyword_conditions = " OR ".join(["title LIKE ? OR description LIKE ?" for _ in keywords])
-    sql_query = f"SELECT DISTINCT title, link, description, category, pubDate FROM advisories WHERE ({keyword_conditions})"
+    sql_query = f"SELECT DISTINCT title, link, description, category, pubDate, wid FROM advisories WHERE ({keyword_conditions})"
     
     if date_limit:
         sql_query += " AND pubDate >= ?"
@@ -65,4 +68,16 @@ def cleanup_database():
     cursor.execute("DELETE FROM advisories WHERE pubDate < ?", (date_limit.strftime('%Y-%m-%d %H:%M:%S'),))
     
     conn.commit()
+    conn.close()
+
+def add_wid_column():
+    conn = create_connection()
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute("ALTER TABLE advisories ADD COLUMN wid TEXT")
+        conn.commit()
+    except sqlite3.OperationalError:
+        print(f"{Fore.GREEN}[+]{Style.RESET_ALL} Column wid already exists.")
+    
     conn.close()
