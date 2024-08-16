@@ -70,6 +70,15 @@ python3 main.py -keywords docker,zabbix,windows
 
 # Usage
 ```bash
+python3 main.py -update/-init # updates the datase and/or initialize the database columns
+python3 main.py -keywords docker,zabbix # searches for entries with the keywords 'docker' and 'zabbix'
+python3 main.py -keywords docker,zabbix -days 5 # searches for entries with the keywords 'docker' and 'zabbix' in the last 5 days
+
+python3 main.py -keywords-file words.txt # searches for keywords out of the txt file
+python3 main.py -keywords-file words.txt -days 5 # searches for keywords out of the txt file in the last 5 days
+```
+
+```bash
          _   _       _       _____                     _     
         | | | |     | |     /  ___|                   | |    
         | | | |_   _| |_ __ \ `--.  ___  __ _ _ __ ___| |__  
