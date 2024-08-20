@@ -13,6 +13,9 @@ def load_keywords_from_file(file_path):
 def wrap_text(text, width=160):
     return "\n".join(textwrap.wrap(text, width=width))
 
+def filter_results_by_status(results, status_filter):
+    return [result for result in results if ("NEU" in result[0] and status_filter == "Neu") or ("UPDATE" in result[0] and status_filter == "Update") or status_filter is None]
+
 if __name__ == "__main__":
     
     # ASCII banner
@@ -26,7 +29,7 @@ if __name__ == "__main__":
          \___/ \__,_|_|_| |_\____/ \___|\__,_|_|  \___|_| |_|
 
         Author: G0urmetD
-        Version: 1.2.1
+        Version: 1.3
     """)
     
     parser = argparse.ArgumentParser(description="Vulnerability Search Tool")
@@ -36,6 +39,7 @@ if __name__ == "__main__":
     parser.add_argument("-keywords-file", help="Path to a file containing keywords to search for")
     parser.add_argument("-days", type=int, help="Search for advisories in the last N days")
     parser.add_argument("-init", action='store_true', help="Switch parameter to initialiaze the database columns.")
+    parser.add_argument("-status", choices=["Neu", "Update"], help="Search parameter to only output for New or Updated vulnerabilities. Not required.")
     
     args = parser.parse_args()
     
@@ -49,8 +53,6 @@ if __name__ == "__main__":
         print(f"{Fore.YELLOW}[~]{Style.RESET_ALL} Updating Database...")
         update_database()
         print(f"{Fore.GREEN}[+]{Style.RESET_ALL} Database updated.")
-    
-    from tabulate import tabulate
 
     if args.keywords or args.keywords_file:
         if args.keywords:
@@ -59,13 +61,17 @@ if __name__ == "__main__":
             keywords = load_keywords_from_file(args.keywords_file)
         
         results = search_advisories(keywords, days=args.days)
+
+        # Filter results based on the -status parameter
+        filtered_results = filter_results_by_status(results, args.status)
         
         table = []
-        for result in results:
+        for result in filtered_results:
             status = "Neu" if "NEU" in result[0] else "Update"
             wrapped_description = wrap_text(result[2], width=50)
             wrapped_title = wrap_text(result[0], width=30)
-            wrapped_link = wrap_text(result[1], width=40)
+            wrapped_link = wrap_text(result[1], width=60)
+            wrapped_link = result[1]
             table.append([result[3], status, wrapped_title, wrapped_description, wrapped_link, result[4], result[5]])
         
         headers = ["Severity", "Status", "Name", "Description", "Link", "Initial Date", "WID Nummer"]
