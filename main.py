@@ -29,7 +29,7 @@ if __name__ == "__main__":
          \___/ \__,_|_|_| |_\____/ \___|\__,_|_|  \___|_| |_|
 
         Author: G0urmetD
-        Version: 1.3
+        Version: 1.3.1
     """)
     
     parser = argparse.ArgumentParser(description="Vulnerability Search Tool")
