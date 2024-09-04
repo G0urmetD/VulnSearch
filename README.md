@@ -110,7 +110,8 @@ To automate the database update process, just use a cronjob and a small shell sc
 
 ```shell
 #!/bin/bash
-python3 /home/kali/VulnSearch/main.py -update
+cd /home/kali/VulnSearch
+python3 main.py -update
 ```
 
 Then create a cronjob to run every 2 hours:
@@ -118,8 +119,8 @@ Then create a cronjob to run every 2 hours:
 crontab -e
 # choose the one you want
 
-# then enter the cronjob to run every 2 hours and create a log file
-0 */2 * * * /bin/bash /home/kali/VulnSearch/update_automation.sh >> /home/kali/VulnSearch/update_cron.log 2>&1
+# then enter the cronjob to run every 4 hours and create a log file
+0 */4 * * * /bin/bash /home/kali/VulnSearch/update_automation.sh >> /home/kali/VulnSearch/update_cron.log 2>&1
 
 # check your edit with
 crontab -l
