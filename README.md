@@ -91,9 +91,10 @@ python3 main.py -checkdb
          \___/ \__,_|_|_| |_\____/ \___|\__,_|_|  \___|_| |_|
 
         Author: G0urmetD
-        Version: 1.3
+        Version: 1.4
 
-usage: main.py [-h] [-update] [-keywords KEYWORDS] [-keywords-file KEYWORDS_FILE] [-days DAYS] [-init] [-status {Neu,Update}]
+usage: main.py [-h] [-update] [-keywords KEYWORDS] [-keywords-file KEYWORDS_FILE] [-days DAYS] [-init]
+               [-status {Neu,Update}] [-checkdb]
 
 Vulnerability Search Tool
 
@@ -106,6 +107,7 @@ options:
   -days DAYS            Search for advisories in the last N days
   -init                 Switch parameter to initialiaze the database columns.
   -status {Neu,Update}  Search parameter to only output for New or Updated vulnerabilities. Not required.
+  -checkdb              Displays database entries.
 ```
 
 # Automation
