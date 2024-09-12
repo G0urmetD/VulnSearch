@@ -1,6 +1,7 @@
 import sqlite3
 from datetime import datetime, timedelta
 from colorama import Fore, Style
+from tabulate import tabulate
 
 DB_NAME = 'security_advisories.db'
 
@@ -79,5 +80,21 @@ def add_wid_column():
         conn.commit()
     except sqlite3.OperationalError:
         print(f"{Fore.GREEN}[+]{Style.RESET_ALL} Column wid already exists.")
+    
+    conn.close()
+
+def display_all_entries():
+    DB_NAME = 'security_advisories.db'
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT * FROM advisories")
+    rows = cursor.fetchall()
+    
+    if rows:
+        headers = ["ID", "Title", "Link", "Description", "Category", "PubDate", "WID Nummer"]
+        print(tabulate(rows, headers, tablefmt="grid"))
+    else:
+        print("No entries found in the database.")
     
     conn.close()

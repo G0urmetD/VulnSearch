@@ -1,7 +1,7 @@
 import argparse
 import textwrap
 from colorama import Fore, Style
-from database import initialize_database, search_advisories, cleanup_database, add_wid_column
+from database import initialize_database, search_advisories, cleanup_database, add_wid_column, display_all_entries
 from rss_feed import update_database
 from tabulate import tabulate
 
@@ -29,7 +29,7 @@ if __name__ == "__main__":
          \___/ \__,_|_|_| |_\____/ \___|\__,_|_|  \___|_| |_|
 
         Author: G0urmetD
-        Version: 1.3.1
+        Version: 1.4
     """)
     
     parser = argparse.ArgumentParser(description="Vulnerability Search Tool")
@@ -40,11 +40,15 @@ if __name__ == "__main__":
     parser.add_argument("-days", type=int, help="Search for advisories in the last N days")
     parser.add_argument("-init", action='store_true', help="Switch parameter to initialiaze the database columns.")
     parser.add_argument("-status", choices=["Neu", "Update"], help="Search parameter to only output for New or Updated vulnerabilities. Not required.")
+    parser.add_argument("-checkdb", action='store_true', help="Displays database entries.")
     
     args = parser.parse_args()
     
     # Initialize database on first run
     initialize_database()
+
+    if args.checkdb:
+        display_all_entries()
     
     if args.init:
         add_wid_column()
