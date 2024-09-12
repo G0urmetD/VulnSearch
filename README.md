@@ -12,7 +12,7 @@ python3 main.py -keywords docker,zabbix,windows
          \___/ \__,_|_|_| |_\____/ \___|\__,_|_|  \___|_| |_|
 
         Author: G0urmetD
-        Version: 1.3.1
+        Version: 1.4
 
 +------------+----------+-----------------------------+----------------------------------------------------+-----------------------------------------------------------------------------+---------------------+-------------------+
 | Severity   | Status   | Name                        | Description                                        | Link                                                                        | Initial Date        | WID Nummer        |
@@ -77,6 +77,9 @@ python3 main.py -keywords docker,zabbix -status Update
 
 python3 main.py -keywords-file words.txt # searches for keywords out of the txt file
 python3 main.py -keywords-file words.txt -days 5 # searches for keywords out of the txt file in the last 5 days
+
+# check database entries
+python3 main.py -checkdb
 ```
 
 ```bash
